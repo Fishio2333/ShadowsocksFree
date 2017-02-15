@@ -7,4 +7,5 @@ pod 'IBAnimatable'
 pod 'MJRefresh'
 pod 'Fuzi'
 pod 'RealmSwift'
+pod 'CYLTableViewPlaceHolder'
 end

@@ -12,6 +12,7 @@ import Fuzi
 import RealmSwift
 import MJRefresh
 import IBAnimatable
+import CYLTableViewPlaceHolder
 
 class ViewController: UIViewController {
     var titles = [String]()
@@ -56,7 +57,7 @@ class ViewController: UIViewController {
     
     func getData() {
         tableView.updateFocusIfNeeded()
-        let URLStr = "http://www.ishadow.site/"
+        let URLStr = "http://www.ishadow.info"
         
         var isNeedRequest: Bool?
         
@@ -82,6 +83,9 @@ class ViewController: UIViewController {
             isNeedRequest = true
         }
         
+        if realm.objects(Model.self).count == 0 {
+            isNeedRequest = true
+        }
         
         if isNeedRequest == true {
         
@@ -123,12 +127,10 @@ class ViewController: UIViewController {
                                     realm.add(model, update: true)
                                 })
                             }
-                            self.tableView.reloadData()
+                            self.tableView.cyl_reloadData()
                             self.tableView.mj_header.endRefreshing()
-//                            self.getDataFromSeeOut()
                         } else {
                             print("nil")
-//                            self.getDataFromSeeOut()
                         }
                         
                     } catch let error  {
@@ -140,7 +142,7 @@ class ViewController: UIViewController {
                 }
             }
         } else {
-            self.tableView.reloadData()
+            self.tableView.cyl_reloadData()
             self.tableView.mj_header.endRefreshing()
         }
     }
@@ -225,7 +227,7 @@ class ViewController: UIViewController {
             tableView.setEditing(false, animated: true)
         }
         
-        tableView.reloadData()
+        tableView.cyl_reloadData()
     }
     
     func addBtnClicked(_ sender: AnyObject) {
@@ -351,6 +353,19 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return isDelete
+    }
+    
+}
+
+extension ViewController: CYLTableViewPlaceHolderDelegate {
+    func makePlaceHolderView() -> UIView! {
+        let view = UIView(frame: self.view.bounds)
+        view.backgroundColor = UIColor.cyan
+        view.addGestureRecognizer({
+            let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.getData))
+            return tap
+        }())
+        return view
     }
     
 }
