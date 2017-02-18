@@ -360,7 +360,13 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: CYLTableViewPlaceHolderDelegate {
     func makePlaceHolderView() -> UIView! {
         let view = UIView(frame: self.view.bounds)
-        view.backgroundColor = UIColor.cyan
+        view.backgroundColor = UIColor.white
+        let label = UILabel(frame: view.bounds)
+        label.text = "没有相应的数据。"
+        label.textAlignment = .center
+        label.textColor = UIColor.lightGray
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        view.addSubview(label)
         view.addGestureRecognizer({
             let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.getData))
             return tap
